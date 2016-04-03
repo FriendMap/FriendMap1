@@ -1,7 +1,9 @@
 package com.friend_map.controllers.test;
 
 import com.friend_map.components.converter.JsonConverter;
+import com.friend_map.persistence_layer.entities.user.User;
 import com.friend_map.persistence_layer.pojo.coordinate.Coordinate;
+import com.friend_map.persistence_layer.services.user.UserService;
 import com.google.gson.Gson;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.redis.core.RedisTemplate;
@@ -11,9 +13,13 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RestController;
 
+import java.util.List;
+
 @RestController
 public class GetByUser {
 
+    @Autowired
+    UserService userService;
     @Autowired
     RedisTemplate redisTemplate;
     @Autowired
@@ -25,6 +31,11 @@ public class GetByUser {
     @RequestMapping(value = "coordinate/{user}", method = RequestMethod.GET)
     public Coordinate getUsers(@PathVariable(value = "user") String user) {
         return findByUser(user);
+    }
+
+    @RequestMapping(value = "test/user/all")
+    public List<User> users() {
+        return userService.getAll(User.class);
     }
 
     @SuppressWarnings("unchecked")

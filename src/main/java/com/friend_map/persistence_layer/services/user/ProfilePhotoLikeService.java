@@ -30,7 +30,7 @@ public class ProfilePhotoLikeService {
     @SuppressWarnings("unchecked")
     public void vote(String id, UserPhotoLike userPostLike) throws Exception {
         String likes = redisTemplate.opsForHash().get(post_like_key, id).toString();
-        Map<String, String> newLikes = jsonConverter.toPostLikeList(likes);
+        Map<String, String> newLikes = jsonConverter.jsonToMap(likes);
 
         String vote = newLikes.get(userPostLike.getUser());
 
@@ -43,7 +43,7 @@ public class ProfilePhotoLikeService {
             newLikes.put(userPostLike.getUser(), userPostLike.getVote());
         }
 
-        redisTemplate.opsForHash().put(post_like_key, id, jsonConverter.postLikeToJson(newLikes));
+        redisTemplate.opsForHash().put(post_like_key, id, jsonConverter.mapToJson(newLikes));
     }
 
     /** УДАЛЯЕТ ЛАЙКИ ПОСТА */
@@ -57,7 +57,7 @@ public class ProfilePhotoLikeService {
     public List<UserPhotoLike> findByPostId(String post_id) {
         try {
             String likes = redisTemplate.opsForHash().get(post_like_key, post_id).toString();
-            Map<String, String> newMap = jsonConverter.toPostLikeList(likes);
+            Map<String, String> newMap = jsonConverter.jsonToMap(likes);
             List<UserPhotoLike> likeList = new ArrayList<>();
             for (Map.Entry<String, String> map : newMap.entrySet()) {
                 likeList.add(new UserPhotoLike(map.getKey(), map.getValue()));

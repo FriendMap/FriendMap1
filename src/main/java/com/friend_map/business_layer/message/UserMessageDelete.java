@@ -33,7 +33,8 @@ public class UserMessageDelete {
         return deleteDialog(dialog_id, userDetailsService.getCurrentUserMin());
     }
 
-    /** ПОМЕТИТЬ ДИАЛОГ КАК УДАЛЕННЫЙ
+    /**
+     * ПОМЕТИТЬ ДИАЛОГ КАК УДАЛЕННЫЙ
      * ЕСЛИ У ОБОИХ ПОМЕЧЕН КАК УДАЛЕННЫЙ УДАЯЛЯЕТСЯ С БД
      * */
     public CommandStatus deleteDialog(UUID uuid, User user) {

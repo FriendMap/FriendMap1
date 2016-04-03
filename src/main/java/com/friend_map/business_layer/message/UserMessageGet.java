@@ -30,6 +30,9 @@ public class UserMessageGet {
         return getUserMessages(uuid, 0);
     }
 
+    /**
+     * ПОЛУЧИТЬ СООБЩЕНИИ ОПРЕДЕЛЕННОГО ПОЛЬЗОВАТЕЛЯ
+     * */
     public List<UserMessage> getUserMessages(UUID uuid, int first) {
         try {
             User current_user = userDetailsService.getCurrentUserMin();
@@ -47,6 +50,9 @@ public class UserMessageGet {
         return new ArrayList<>();
     }
 
+    /**
+     * ПОЛУЧИТЬ ДИАЛОГИ ПОЛЬЗОВАТЕЛЯ
+     * */
     public List<Dialog> getUserDialogs() {
         try {
             User current_user = userDetailsService.getCurrentUserMin();

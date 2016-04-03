@@ -24,6 +24,15 @@ public class GetFriendByStatus {
     @Autowired
     UserDetailsServiceImpl userDetailsService;
 
+    public List<String> getUserFriendsId(User user) {
+        List<User> users = getUsersByStatus(user, FriendStatus.FRIEND);
+        List<String> strings = new ArrayList<>();
+        for (User friend : users) {
+            strings.add(friend.getId().toString());
+        }
+        return strings;
+    }
+
     public List<User> getUsersByStatus(FriendStatus friendStatus) {
         User user = userDetailsService.getCurrentUser();
         return getUsersByStatus(user, friendStatus);
@@ -38,13 +47,9 @@ public class GetFriendByStatus {
             User secondUser = friend.getSecond_user();
             FriendStatus currentUserStatus = friendStatusService.friendStatus(user,firstUser);
             if (currentUserStatus == FriendStatus.CURRENT_USER) {
-                if (friendStatusService.friendStatus(user, secondUser) == friendStatus) {
-                    userList.add(friend.getSecond_user());
-                }
+                userList.add(secondUser);
             } else {
-                if (currentUserStatus == friendStatus) {
-                    userList.add(friend.getFirst_user());
-                }
+                userList.add(firstUser);
             }
         }
         return userList;

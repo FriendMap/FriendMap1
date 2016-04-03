@@ -10,13 +10,8 @@ import org.springframework.stereotype.Component;
 public class JsonBuilder {
 
     @Bean
-    public GsonBuilder gsonBuilder() {
-        return new GsonBuilder();
-    }
-
-    @Bean
-    @Autowired
-    public Gson gson(GsonBuilder gsonBuilder) {
+    public Gson gson() {
+        GsonBuilder gsonBuilder = new GsonBuilder();
         return gsonBuilder.create();
     }
 }

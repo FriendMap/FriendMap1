@@ -25,6 +25,7 @@ public class User {
     public static final String NICKNAME = "nickname";
     public static final String PASSWORD = "password";
     public static final String ROLE = "role";
+    public static final String USER_DATA = "userData";
 
     @Id
     @GeneratedValue(generator = "uuid2")
@@ -61,13 +62,32 @@ public class User {
     @JsonDeserialize
     private List<User> friends = new ArrayList<>();
 
-    /** АВАТАРКА TODO: ДОЛЖНО БЫТЬ 1 К 1, НЕ ПОСТАВИЛ ИЗ ЗА ПРОБЛЕМ С КЭШИРОВАНИЕМ
+    /**
+     * АВАТАРКА TODO: ДОЛЖНО БЫТЬ 1 К 1, НЕ ПОСТАВИЛ ИЗ ЗА ПРОБЛЕМ С КЭШИРОВАНИЕМ
      *  */
     @JsonManagedReference
     @OneToMany(mappedBy = ProfileImage.USER, fetch = FetchType.LAZY, cascade = CascadeType.ALL, orphanRemoval = true)
     @org.hibernate.annotations.Cache(usage = CacheConcurrencyStrategy.READ_WRITE)
     private List<ProfileImage> profileImage = new ArrayList<>();
 
+    /** ДАННЫЕ */
+    @JsonIgnore
+    @OneToMany(mappedBy = UserData.USER, fetch = FetchType.LAZY, cascade = CascadeType.ALL, orphanRemoval = true)
+    @org.hibernate.annotations.Cache(usage = CacheConcurrencyStrategy.READ_WRITE)
+    private List<UserData> userData = new ArrayList<>();
+
+    public ProfileImage getProfileImage() {
+        if (profileImage.iterator().hasNext()) {
+            return profileImage.iterator().next();
+        } else {
+            return null;
+        }
+    }
+
+    public void setProfileImage(ProfileImage profileImage) {
+        this.profileImage.clear();
+        this.profileImage.add(profileImage);
+    }
 
     public User(UUID id) {
         this.id = id;
@@ -119,19 +139,6 @@ public class User {
 
     public void setRole(String role) {
         this.role = role;
-    }
-
-    public ProfileImage getProfileImage() {
-        if (profileImage.iterator().hasNext()) {
-            return profileImage.iterator().next();
-        } else {
-            return null;
-        }
-    }
-
-    public void setProfileImage(ProfileImage profileImage) {
-        this.profileImage.clear();
-        this.profileImage.add(profileImage);
     }
 
     public String getFriedStatus() {

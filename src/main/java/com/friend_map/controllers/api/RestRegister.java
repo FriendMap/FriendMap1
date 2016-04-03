@@ -15,6 +15,7 @@ import org.springframework.web.bind.annotation.RestController;
 
 @RestController
 @RequestMapping(value = "register")
+@Secured({Roles.ROLE_ANONYMOUS})
 public class RestRegister {
 
     @Autowired
@@ -25,12 +26,14 @@ public class RestRegister {
 
     @RequestMapping(method = RequestMethod.POST)
     @Secured({Roles.ROLE_ANONYMOUS})
-    public CommandStatusResult register(@RequestParam(User.USERNAME) String username,
-                                        @RequestParam(User.PASSWORD) String password) {
+    public CommandStatusResult register(@RequestParam(value = "username") String username,
+                                        @RequestParam(value = "nickname") String nickname,
+                                        @RequestParam(value = "password") String password) {
         try {
             User user = new User();
             user.setUsername(username);
             user.setPassword(password);
+            user.setNickname(nickname);
             user.setRole(Roles.ROLE_USER);
             commandStatus = registerService.register(user);
         }
